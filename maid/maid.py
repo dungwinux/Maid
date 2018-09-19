@@ -60,10 +60,8 @@ args = parser.parse_args()
 appPath = os.getenv('APPDATA')
 
 maidDir = os.fsencode(os.getcwd() + '\\maid\\')
-maidConfDir = appPath + os.fsencode('\\maid\\')
-maidConfFile = appPath + os.fsencode('\\maid\\maid.conf')
-
-print(maidDir)
+maidConfDir = os.fsencode(appPath + '\\maid\\')
+maidConfFile = os.fsencode(appPath + '\\maid\\maid.conf')
 
 exists = os.path.isfile(maidConfFile)
 if not exists:
