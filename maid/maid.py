@@ -58,12 +58,6 @@ def FirstTimeSetup():
     os.chdir(cwd)
 
 
-parser = argparse.ArgumentParser(
-    prog='Maid', description='Maid - Package Manager')
-parser.add_argument('--version', action='version',
-                    version='%(prog)s Pre-Alpha')
-
-
 def ReadConf():
     maidConfFile = os.fsencode(config.appPath + '\\maid\\maid.conf')
     exists = os.path.isfile(maidConfFile)
@@ -79,7 +73,20 @@ def ReadConf():
     return True
 
 
+parser = argparse.ArgumentParser(
+    prog='Maid', description='Maid - Package Manager')
+parser.add_argument('--version', action='version',
+                    version='%(prog)s Pre-Alpha')
+subparsers = parser.add_subparsers(
+    help='sub-command help',
+    title='command',
+    required=True,
+    metavar='<command>')
+subparsers.add_parser('add', help='Add package')
+subparsers.add_parser('rem', help='Remove package')
+
 args = parser.parse_args()
+
 
 if not ReadConf():
     FirstTimeSetup()
