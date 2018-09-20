@@ -65,16 +65,16 @@ parser.add_argument('--version', action='version',
 
 
 def ReadConf():
-    maidConfFile = os.fsencode(appPath + '\\maid\\maid.conf')
+    maidConfFile = os.fsencode(config.appPath + '\\maid\\maid.conf')
     exists = os.path.isfile(maidConfFile)
     if not exists:
         return False
-    config = configparser.ConfigParser()
-    config.read(maidConfFile)
+    conf = configparser.ConfigParser()
+    conf.read(maidConfFile)
 
-    config.maidDir = os.fsencode(config['options']['rootDir'])
-    config.maidConfDir = os.fsencode(config['options']['confDir'])
-    config.maidTempDir = os.fsencode(config['options']['tempDir'])
+    conf.maidDir = os.fsencode(conf['options']['rootDir'])
+    conf.maidConfDir = os.fsencode(conf['options']['confDir'])
+    conf.maidTempDir = os.fsencode(conf['options']['tempDir'])
 
     return True
 
