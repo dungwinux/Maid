@@ -18,7 +18,7 @@ class pkg:
     @staticmethod
     def is_pkg(p_json):
         if type(p_json) is dict:
-            if not all (key in p_json for key in ('name', 'bin_url', 'sha1')):
+            if not all(key in p_json for key in ('name', 'bin_url', 'sha1')):
                 return False
         return True
 
@@ -28,6 +28,7 @@ class pkg:
             dmp = json.loads(p_json)
         return cls(dmp['name'], dmp['bin_url'], dmp['sha1'])
         # TODO: is_local
+
 
 class pkg_list:
     def __init__(self, filename):
@@ -43,7 +44,7 @@ class pkg_list:
 
     def rem(self, package: pkg):
         self.data.remove(pkg)
-    
+
     # TODO: Low-level API
 
 # Example
