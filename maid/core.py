@@ -34,10 +34,12 @@ def get(url):
 
     os.chdir(maidDir)
 
+# Example
+# get('https://github.com/taptapking/2049/releases/download/5.3/2048.5.3.x86.exe')
+
 
 # def query(package, pkg_list):
 # TODO: Query function
 
 # def rem(package)
 # TODO: Remove function
-get('https://github.com/taptapking/2049/releases/download/5.3/2048.5.3.x86.exe')
