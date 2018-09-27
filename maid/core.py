@@ -3,7 +3,9 @@ import zipfile
 import os
 import wget
 import shutil
-from urllib.parse import urlunparse
+from urllib.parse import urlunparse, urlparse
+# Dev dependancy
+import fire
 
 # Modules
 import pkgman
@@ -16,21 +18,25 @@ from config import maidDir, maidTempDir, maidPackDir
 def get(url):
     """Retrieve package with specified url"""
 
+    link = urlparse(url)
+    url = link.geturl()
+    print(f'Starting download from {url}')
     os.chdir(maidTempDir)
     filename = wget.download(url)
     print(f'\nDownloaded {filename}')
-    pkgname = input(f'Package name (default is {filename}): ')
-    if not pkgname:
-        pkgname = filename
-    extractPath = os.fsdecode(maidPackDir) + pkgname + '\\'
-    print(f'Extracting to {extractPath}')
+    # pkgname = input(f'Package name (default is {filename}): ')
+    # if not pkgname:
+    #     pkgname = filename
+    pkgname = os.path.splitext(filename)[0]
+    extractPath = os.fsdecode(maidPackDir) + pkgname
+    print(f'Extracting to {extractPath}...')
     if not os.path.isdir(extractPath):
         os.makedirs(extractPath)
     if zipfile.is_zipfile(filename):
         zipfile.ZipFile(filename).extractall(path=extractPath)
     else:
         print('Not zip archive file. Casting downloaded file as extracted package.')
-        shutil.copyfile(filename, os.fsencode(extractPath))
+        shutil.copy2(filename, extractPath)
 
     os.chdir(maidDir)
 
@@ -43,3 +49,6 @@ def get(url):
 
 # def rem(package)
 # TODO: Remove function
+
+if __name__ == '__main__':
+    fire.Fire()
