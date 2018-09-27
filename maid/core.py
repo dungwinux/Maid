@@ -4,7 +4,7 @@ import os
 import wget
 import shutil
 from urllib.parse import urlunparse, urlparse
-# Dev dependancy
+# Dev libraries
 import fire
 
 # Modules
@@ -50,5 +50,6 @@ def get(url):
 # def rem(package)
 # TODO: Remove function
 
+# Dev interface
 if __name__ == '__main__':
     fire.Fire()

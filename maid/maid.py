@@ -66,6 +66,7 @@ if not os.path.isfile('maid'):
     with open('maid', 'w+') as f:
         FirstTimeSetup()
 
+# Verbose
 print('Maid root directory:', os.fsdecode(maidDir))
 print('Maid config directory:', os.fsdecode(maidConfDir))
 print('Maid temp directory:', os.fsdecode(maidTempDir))

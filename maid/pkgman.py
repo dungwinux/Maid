@@ -12,11 +12,13 @@ class pkg:
         self.is_local = bool(is_local)
 
     def toJSON(self):
+        """Convert package to json"""
         return json.dumps(self, default=lambda o: o.__dict__,
                           indent=4)
 
     @staticmethod
     def is_pkg(p_json):
+        """Check if given object is package"""
         if type(p_json) is dict:
             if not all(key in p_json for key in ('name', 'bin_url', 'sha1')):
                 return False
@@ -24,6 +26,7 @@ class pkg:
 
     @classmethod
     def fromJSON(cls, p_json):
+        """Create new package from json"""
         if pkg.is_pkg(p_json):
             dmp = json.loads(p_json)
         return cls(dmp['name'], dmp['bin_url'], dmp['sha1'])
@@ -40,9 +43,11 @@ class pkg_list:
                     self.data.append(pkg.fromJSON(p))
 
     def add(self, package: pkg):
+        """Append package"""
         self.data.append(pkg)
 
     def rem(self, package: pkg):
+        """Remove package"""
         self.data.remove(pkg)
 
     # TODO: Low-level API
