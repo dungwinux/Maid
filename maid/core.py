@@ -9,7 +9,7 @@ import fire
 
 # Modules
 import pkgman
-from config import maidDir, maidTempDir, maidPackDir
+from config import *
 
 # def add(package):
 # TODO: Add function
@@ -47,8 +47,17 @@ def get(url):
 # def query(package, pkg_list):
 # TODO: Query function
 
-# def rem(package)
-# TODO: Remove function
+def rem(package_name):
+    """Remove package"""
+    cwd = os.getcwd()
+    os.chdir(maidPackDir)
+
+    path = package_name + '\\'
+    print(path)
+    if os.path.isdir(path):
+        shutil.rmtree(path)
+    else:
+        print('Invalid Package')
 
 # Dev interface
 if __name__ == '__main__':
