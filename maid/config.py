@@ -17,6 +17,8 @@ maidPackDir = os.fsencode(os.fsdecode(maidDir) + 'pkg\\')
 def ReadConf():
     """Read configuration in designated location"""
 
+    global maidDir, maidConfDir, maidTempDir, maidPackDir
+
     print('Reading Config file')
     maidConfFile = os.fsencode(appPath + '\\maid\\maid.conf')
     exists = os.path.isfile(maidConfFile)
@@ -25,10 +27,10 @@ def ReadConf():
         conf = configparser.ConfigParser()
         conf.read(maidConfFile)
 
-        conf.maidDir = os.fsencode(conf['options']['rootDir'])
-        conf.maidConfDir = os.fsencode(conf['options']['confDir'])
-        conf.maidTempDir = os.fsencode(conf['options']['tempDir'])
-        conf.maidPackDir = os.fsencode(conf['options']['packDir'])
+        maidDir = os.fsencode(conf['options']['rootDir'])
+        maidConfDir = os.fsencode(conf['options']['confDir'])
+        maidTempDir = os.fsencode(conf['options']['tempDir'])
+        maidPackDir = os.fsencode(conf['options']['packDir'])
     else:
         MakeConf()
 
@@ -55,4 +57,40 @@ def MakeConf():
         config.write(configfile)
 
 
+def FirstTimeSetup():
+
+    print("Running First-Time-Setup")
+
+    cwd = os.getcwd()
+
+    # TaskList file
+    # taskList = configparser.ConfigParser()
+    # taskList['list'] = {
+    #     'GitPkg': 'False'}
+    # with open(os.fsencode('list.conf'), 'w') as taskfile:
+    #     taskfile.write(confHeader)
+    #     taskList.write(taskfile)
+
+    # Pkg maidDir
+    os.chdir(maidDir)
+    if not os.path.isdir(maidDir):
+        os.mkdir(maidDir)
+
+    if not os.path.isdir('list/'):
+        os.mkdir('list/')
+    if not os.path.isdir('pkg/'):
+        os.mkdir('pkg/')
+
+    os.chdir(cwd)
+
+
 ReadConf()
+
+# Check for prepared directory
+# If not, Maid will try to create `maid` file in order to mark folder
+
+if not os.path.isfile('maid'):
+    with open('maid', 'w+') as f:
+        FirstTimeSetup()
+
+os.chdir(maidConfDir)

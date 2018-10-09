@@ -9,7 +9,7 @@ import fire
 
 # Modules
 import pkgman
-from config import *
+from config import maidConfDir, maidDir, maidPackDir, maidTempDir, appPath
 
 # def add(package):
 # TODO: Add function
@@ -58,6 +58,7 @@ def rem(package_name):
         shutil.rmtree(path)
     else:
         print('Invalid Package')
+
 
 # Dev interface
 if __name__ == '__main__':
