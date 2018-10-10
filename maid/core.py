@@ -19,7 +19,6 @@ from config import maidConfDir, maidDir, maidPackDir, maidTempDir, appPath
 def get(package):
     """Retrieve package with specified url"""
 
-
     link = urlparse(package)
     url = link.geturl()
     print(f'Starting download from {url}')
@@ -42,7 +41,7 @@ def get(package):
     name_break = pkgname.split('-')
     name_break.pop()
     pkgname = '-'.join(name_break)
-    
+
     # Extract package to maidPkgDir
     extractPath = os.fsdecode(maidPackDir) + pkgname
     print(f'Extracting to {extractPath}...')
@@ -75,10 +74,16 @@ def rem(package):
     else:
         print('Invalid Package')
 
+
 def query(package=''):
     """Query list of package"""
-    print(maidPackDir)
-    print(os.listdir(maidPackDir))
+    pkg_list = list(os.listdir(maidPackDir))
+    print('Number of package(s):', len(pkg_list))
+    pkg_list = map(os.fsdecode, pkg_list)
+    # TODO: filter() pkg_list with regex
+    for pkg in pkg_list:
+        print(pkg)
+
 
 # Dev interface
 if __name__ == '__main__':
