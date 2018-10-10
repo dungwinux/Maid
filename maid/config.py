@@ -17,7 +17,7 @@ maidPackDir = os.fsencode(os.fsdecode(maidDir) + 'pkg\\')
 def ReadConf():
     """Read configuration in designated location"""
 
-    # global maidDir, maidConfDir, maidTempDir, maidPackDir
+    global maidDir, maidConfDir, maidTempDir, maidPackDir
 
     print('[Verbose] Reading Config file')
     maidConfFile = os.fsencode(appPath + '\\maid\\maid.conf')
@@ -33,10 +33,23 @@ def ReadConf():
         maidPackDir = os.fsencode(conf['options']['packDir'])
     else:
         MakeConf()
+    
+    if not os.path.exists(maidDir):
+        os.makedirs(maidDir)
+    if not os.path.exists(maidConfDir):
+        os.makedirs(maidConfDir)
+    if not os.path.exists(maidPackDir):
+        os.makedirs(maidPackDir)
+    if not os.path.exists(maidTempDir):
+        os.makedirs(maidTempDir)
+    
+
 
 
 def MakeConf():
     """Create new configuration in designated location"""
+
+    global maidDir, maidConfDir, maidTempDir, maidPackDir
 
     # Maid config.maidDir
     print('[Verbose] Creating config file')
