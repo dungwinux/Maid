@@ -39,7 +39,10 @@ def get(package):
     pkgname = os.path.splitext(filename)[0]
     # Try removing version number from filename
     name_break = pkgname.split('-')
-    name_break.pop()
+    # TODO: Compare with downloaded package
+
+    if len(name_break) > 1:
+        name_break.pop()
     pkgname = '-'.join(name_break)
 
     # Extract package to maidPkgDir
