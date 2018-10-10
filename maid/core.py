@@ -64,11 +64,11 @@ def get(package):
 
 def rem(package):
     """Remove package"""
+
     cwd = os.getcwd()
     os.chdir(maidPackDir)
-
+    print('Removing:', package)
     path = package + '\\'
-    print(path)
     if os.path.isdir(path):
         shutil.rmtree(path)
     else:
@@ -77,6 +77,7 @@ def rem(package):
 
 def query(package=''):
     """Query list of package"""
+
     pkg_list = list(os.listdir(maidPackDir))
     print('Number of package(s):', len(pkg_list))
     pkg_list = map(os.fsdecode, pkg_list)

@@ -42,6 +42,14 @@ if __name__ == "__main__":
         metavar='<pkg_name>')
     rem_parse.set_defaults(func=core.rem)
 
+    que_parse = subparsers.add_parser('que', help='Query package')
+    que_parse.add_argument(
+        'package',
+        type=str,
+        help='Package name',
+        metavar='<pkg_name>',
+        default='')
+    que_parse.set_defaults(func=core.query)
+
     args = parser.parse_args()
-    print(args)
     args.func(package=args.package)
