@@ -32,6 +32,7 @@ if __name__ == "__main__":
         type=str,
         help='Url to package',
         metavar='<url>')
+    # nargs='+'
     add_parse.set_defaults(func=core.get)
 
     rem_parse = subparsers.add_parser('rem', help='Remove package')
@@ -40,6 +41,7 @@ if __name__ == "__main__":
         type=str,
         help='Package name',
         metavar='<pkg_name>')
+    # nargs='+'
     rem_parse.set_defaults(func=core.rem)
 
     que_parse = subparsers.add_parser('que', help='Query package')
@@ -48,7 +50,7 @@ if __name__ == "__main__":
         type=str,
         help='Package name',
         metavar='<pkg_name>',
-        default='')
+        nargs='?')
     que_parse.set_defaults(func=core.query)
 
     args = parser.parse_args()
