@@ -39,6 +39,7 @@ def MakeConf():
     """Create new configuration in designated location"""
 
     # Maid config.maidDir
+    print('[Verbose] Creating config file')
     if not os.path.isdir(maidConfDir):
         os.mkdir(maidConfDir)
     os.chdir(maidConfDir)

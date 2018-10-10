@@ -13,9 +13,13 @@ import core
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        prog='maid', description='Maid - Package Manager')
-    parser.add_argument('--version', action='version',
-                        version='%(prog)s Pre-Alpha')
+        prog='maid',
+        description='Maid - Package Manager',
+        epilog='Example: TBA')
+    parser.add_argument(
+        '--version',
+        action='version',
+        version='%(prog)s Pre-Alpha')
     subparsers = parser.add_subparsers(
         help='sub-command help',
         title='command',
@@ -23,11 +27,21 @@ if __name__ == "__main__":
         metavar='<command>')
 
     add_parse = subparsers.add_parser('add', help='Add package')
-    add_parse.add_argument('url', type=str, help='Url to package', metavar='<url>')
-    # add_parse.set_defaults(func=core.get)
+    add_parse.add_argument(
+        'package',
+        type=str,
+        help='Url to package',
+        metavar='<url>')
+    add_parse.set_defaults(func=core.get)
 
     rem_parse = subparsers.add_parser('rem', help='Remove package')
-    rem_parse.add_argument('pkg_name', type=str, help='Package name', metavar='<pkg_name>')
-    # rem_parse.set_defaults(func=core.)
+    rem_parse.add_argument(
+        'package',
+        type=str,
+        help='Package name',
+        metavar='<pkg_name>')
+    rem_parse.set_defaults(func=core.rem)
 
-    # args = parser.parse_args()
+    args = parser.parse_args()
+    print(args)
+    args.func(package=args.package)
