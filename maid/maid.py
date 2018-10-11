@@ -54,4 +54,4 @@ if __name__ == "__main__":
     que_parse.set_defaults(func=core.query)
 
     args = parser.parse_args()
-    args.func(package=args.package)
+    args.func(args.package)

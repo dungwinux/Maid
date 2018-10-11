@@ -16,10 +16,10 @@ from config import maidConfDir, maidDir, maidPackDir, maidTempDir, appPath
 # def add(package):
 # TODO: Add function
 
-def get(package):
+def get(url):
     """Retrieve package with specified url"""
 
-    link = urlparse(package)
+    link = urlparse(url)
     url = link.geturl()
     print(f'Starting download from {url}')
 
@@ -78,7 +78,7 @@ def rem(package):
         print('Invalid Package')
 
 
-def query(package=''):
+def query(pkg_search=''):
     """Query list of package"""
 
     pkg_list = list(os.listdir(maidPackDir))
