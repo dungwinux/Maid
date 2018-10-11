@@ -3,6 +3,7 @@ import zipfile
 import os
 import wget
 import shutil
+import re
 from urllib.parse import urlunparse, urlparse
 
 # Dev libraries
@@ -78,15 +79,29 @@ def rem(package):
         print('Invalid Package')
 
 
-def query(pkg_search=''):
+def query(pkg_search):
     """Query list of package"""
 
     pkg_list = list(os.listdir(maidPackDir))
-    print('Number of package(s):', len(pkg_list))
     pkg_list = map(os.fsdecode, pkg_list)
-    # TODO: filter() pkg_list with regex
+    # filter() pkg_list with regex
+    regex = re.compile(str(pkg_search))
+    pkg_list = list(filter(regex.search, pkg_list))
+
+    print('Number of matching package(s):', len(pkg_list))
     for pkg in pkg_list:
         print(pkg)
+
+
+def clear():
+    """Clear temp folder"""
+
+    print('Clearing temporary package download...')
+    if os.path.exists(maidTempDir):
+        shutil.rmtree(maidTempDir)
+
+    if not os.path.exists(maidTempDir):
+        os.makedirs(maidTempDir)
 
 
 # Dev interface

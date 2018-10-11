@@ -20,6 +20,10 @@ if __name__ == "__main__":
         '--version',
         action='version',
         version='%(prog)s Pre-Alpha')
+    parser.add_argument(
+        '--force',
+        action='store_true'
+    )
     subparsers = parser.add_subparsers(
         help='sub-command help',
         title='command',
@@ -51,7 +55,14 @@ if __name__ == "__main__":
         help='Package name',
         metavar='<pkg_name>',
         nargs='?')
-    que_parse.set_defaults(func=core.query)
+    que_parse.set_defaults(func=core.query, package='.*?')
+
+    cle_parse = subparsers.add_parser(
+        'cle', help='Clear temporary package downloads')
+    cle_parse.set_defaults(func=core.clear)
 
     args = parser.parse_args()
-    args.func(args.package)
+    if 'package' in args:
+        args.func(args.package)
+    else:
+        args.func()
