@@ -14,33 +14,16 @@ import pkgman
 from config import maidConfDir, maidDir, maidPackDir, maidTempDir, appPath
 
 
-# def add(package):
 # TODO: Add function
+def add(path):
+    """Add package to local storage"""
 
-def get(url):
-    """Retrieve package with specified url"""
-
-    link = urlparse(url)
-    url = link.geturl()
-    print(f'Starting download from {url}')
-
-    # Change directory to Temp folder
-    if not os.path.isdir(maidTempDir):
-        os.mkdir(maidTempDir)
-    os.chdir(maidTempDir)
-
-    # Download package using wget
-    filename = wget.download(url)
-    print(f'\nDownloaded {filename}')
-    # pkgname = input(f'Package name (default is {filename}): ')
-    # if not pkgname:
-    #     pkgname = filename
-
+    filename = os.path.basename(path)
     # Remove extension from filename
     pkgname = os.path.splitext(filename)[0]
     # Try removing version number from filename
     name_break = pkgname.split('-')
-    # TODO: Compare with downloaded package
+    # TODO: Compare with installed package
 
     if len(name_break) > 1:
         name_break.pop()
@@ -56,6 +39,25 @@ def get(url):
     else:
         print('Not zip archive file. Treating downloaded file as extracted package.')
         shutil.copy2(filename, extractPath)
+
+
+def get(url):
+    """Retrieve package with specified url"""
+
+    link = urlparse(url)
+    url = link.geturl()
+    print(f'Starting download from {url}')
+
+    # Change directory to Temp folder
+    # if not os.path.isdir(maidTempDir):
+    #     os.mkdir(maidTempDir)
+    os.chdir(maidTempDir)
+
+    # Download package using wget
+    filename = wget.download(url)
+    print(f'\nDownloaded {filename}')
+
+    add(os.fsdecode(maidTempDir) + filename)
 
     os.chdir(maidDir)
 
