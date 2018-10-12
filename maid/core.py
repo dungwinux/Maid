@@ -23,10 +23,12 @@ def add(path):
     pkgname = os.path.splitext(filename)[0]
     # Try removing version number from filename
     name_break = pkgname.split('-')
-    # TODO: Compare with installed package
+    # TODO: Compare SHA1 with installed package
 
     if len(name_break) > 1:
-        name_break.pop()
+        regex = re.compile('^[0-9]+(\.[0-9]+){2,3}')
+        while regex.match(name_break[-1]):
+            name_break.pop()
     pkgname = '-'.join(name_break)
 
     # Extract package to maidPkgDir
