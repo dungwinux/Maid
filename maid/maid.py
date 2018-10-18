@@ -2,9 +2,7 @@
 import os
 import argparse
 import configparser
-import shutil
 import urllib
-import fire
 
 # Modules
 import core

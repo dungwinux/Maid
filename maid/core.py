@@ -7,11 +7,10 @@ import re
 from urllib.parse import urlunparse, urlparse
 
 # Modules
-import pkgman
 from config import maidConfDir, maidDir, maidPackDir, maidTempDir, appPath
+import pkgman
 
 
-# TODO: Add function
 def add(path):
     """Add package to local storage"""
     # This function will try to:
