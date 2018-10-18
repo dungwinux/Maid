@@ -96,7 +96,7 @@ def rem(package):
     print('Removing:', package)
 
     # TODO: Search for package
-    
+
     # Get designated package path by concatenating given package name
     # WARNING: This should be held serious as it could be used to delete
     # system files
@@ -141,3 +141,26 @@ def clear():
 
     if not os.path.exists(maidTempDir):
         os.makedirs(maidTempDir)
+
+
+def import_pkg(path):
+    """Import packages list"""
+    # This function will try to:
+    # read package list from path and if it is:
+    #         url -> call get API
+    # local files -> call add API
+
+    # TODO: import package list from path and call proper function to handle
+
+
+def export_pkg(path):
+    """Export packages list"""
+    # This function will try to:
+    # read all available packages and
+    # return a package list in path
+
+    # TODO: Query a package list and export to path
+
+
+# TODO: Integrate pkgman.py function to handle package or,
+#       poorly handle package by hand
