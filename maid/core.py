@@ -20,23 +20,38 @@ def add(path):
 
     # Get filename from package's path
     filename = os.path.basename(path)
-    # Remove extension from filename
-    pkgname = os.path.splitext(filename)[0]
+    # Remove extension from filename to get downloaded package's name
+    pkgname = str(os.path.splitext(filename)[0])
 
     # Split version number from filename
-    name_break = pkgname.split('-')
-    if len(name_break) > 1:
-        # Find version number string
-        regex = re.compile('^[0-9]+(\.[0-9]+){2,3}')
-        while regex.match(name_break[-1]):
-            name_break.pop()
-    # Joining for final package name
-    pkgname = '-'.join(name_break)
+    regex = re.compile(r"[0-9]+(\.[0-9]+){2,3}")
+    ver_lookup = regex.search(pkgname)
+
+    # Check if version looking-up is successful
+    if ver_lookup is None:
+        # If version number is not found, set name to pkgname, ver to '0.0.0'
+        ver = '0.0.0'
+        name = pkgname
+    else:
+        # If version number is found, set name to pkgname that was sliced version number
+        v_begin, v_end = ver_lookup.span()
+        # Slice package version
+        ver = pkgname[v_begin:v_end]
+        name = pkgname[:v_begin - 1]
+        if not pkgname[v_end:]:
+            name = name + pkgname[v_end:]
+    # TODO: Compare package's version with installed package
 
     # TODO: Compare SHA1 with installed package
 
-    # Get extract path by concatenating maidPackDir and pkgname
-    extractPath = os.fsdecode(maidPackDir) + pkgname
+    # NOTE: After above step, we got some important variables from guessing
+    # - pkgname: Name of downloaded package, this is where we guess from
+    # - name: Name of program inside package
+    # - ver: Version of program inside package
+    # - sha1: (TODO) Sha1 of downloaded package
+
+    # Get extract path by concatenating maidPackDir and name
+    extractPath = os.fsdecode(maidPackDir) + name
     # Verbose
     print(f'Extracting to {extractPath}...')
 
