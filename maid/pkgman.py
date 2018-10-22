@@ -4,8 +4,7 @@ import os
 from urllib.parse import urlparse
 
 # NOTE: These code are originally created for handling packages with core.py,
-# although no useful usage has been given. The following code are expected to be
-# deprecated, so don't touch it until further notice.
+# The following code are expected to be used in future, so don't change it
 
 
 class pkg:
