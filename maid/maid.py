@@ -40,7 +40,7 @@ if __name__ == "__main__":
         help='Url to package',
         metavar='<url>')
     # nargs='+'
-    add_parse.set_defaults(func=core.get)
+    add_parse.set_defaults(func=core.add)
 
     # rem sub-command
     rem_parse = subparsers.add_parser('rem', help='Remove package')
