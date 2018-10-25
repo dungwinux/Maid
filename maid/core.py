@@ -128,6 +128,7 @@ def query(pkg_search):
     # return list of matching package(s)
 
     # Generate a list of package
+    # NOTE: Will use a new way to handle instead of querying folders' name
     pkg_list = list(os.listdir(maidPackDir))
     # Formatting package name from binary -> string
     pkg_list = map(os.fsdecode, pkg_list)
@@ -136,7 +137,7 @@ def query(pkg_search):
     # Search for matching package(s)
     pkg_list = list(filter(regex.search, pkg_list))
 
-    print('Number of matching package(s):', len(pkg_list))
+    print('Matching package(s):', len(pkg_list))
     # Print searching result
     for pkg in pkg_list:
         print(pkg)
