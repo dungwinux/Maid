@@ -19,7 +19,13 @@ def add(path):
     # try to extract it to maidPackDir
 
     # Get filename from package's path
-    filename = os.path.basename(path)
+    filepath = os.fsdecode(os.fsencode(path))
+    filename = os.path.basename(filepath)
+    # Here we got:
+    # - filepath: path to pacakges
+    # - filename: name of package (by concat filepath)
+
+    print(f"Reading {filename}")
     # Remove extension from filename to get downloaded package's name
     pkgname = str(os.path.splitext(filename)[0])
 
@@ -59,9 +65,9 @@ def add(path):
     if not os.path.isdir(extractPath):
         os.makedirs(extractPath)
     # Checking for zip file
-    if zipfile.is_zipfile(filename):
+    if zipfile.is_zipfile(filepath):
         # If it is, Maid will extract its content to the new folder in maidPackDir
-        zipfile.ZipFile(filename).extractall(path=extractPath)
+        zipfile.ZipFile(filepath).extractall(path=extractPath)
     else:
         # Else, Maid will copy content to new folder in maidPackDir
         print('Not zip archive file. Treating downloaded file as extracted package.')
