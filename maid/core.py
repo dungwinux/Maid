@@ -45,8 +45,7 @@ def add(path):
         ver = pkgname[v_begin:v_end]
         print(f'[Verbose] Package version detected: {ver}')
         name = pkgname[:v_begin - 1]
-        if pkgname[v_end:]:
-            name = name + pkgname[v_end:]
+        name = name + pkgname[v_end:]
     # TODO: Compare package's version with installed package
 
     # TODO: Compare SHA1 with installed package
@@ -60,7 +59,7 @@ def add(path):
     # Get extract path by concatenating maidPackDir and name
     extractPath = os.fsdecode(maidPackDir) + name
     # Verbose
-    print(f'Extracting to {extractPath}...')
+    print(f'Extracting to {extractPath} ...')
 
     # Extract package to maidPkgDir
     if not os.path.isdir(extractPath):
