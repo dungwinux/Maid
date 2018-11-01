@@ -43,8 +43,9 @@ def add(path):
         v_begin, v_end = ver_lookup.span()
         # Slice package version
         ver = pkgname[v_begin:v_end]
+        print(f'[Verbose] Package version detected: {ver}')
         name = pkgname[:v_begin - 1]
-        if not pkgname[v_end:]:
+        if pkgname[v_end:]:
             name = name + pkgname[v_end:]
     # TODO: Compare package's version with installed package
 
