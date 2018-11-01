@@ -1,16 +1,16 @@
 # Maid
 Package manager
 
-Status: **Pre-Alpha**
+Status: **Alpha**
 
 Maid is a binary package manager, written in Python 3.7, for Windows.
 
 
 ### WIP Features
-- [ ] Environment Setup
+- [x] Environment Setup
 - [x] Command-line interface
-- [ ] Binding package
 - [ ] Import/Export package list
+    - [ ] Binding package
 - [ ] Read MSI package
 
 See [here](/guide.md) for usage guide.
