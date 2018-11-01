@@ -30,7 +30,7 @@ def add(path):
     pkgname = str(os.path.splitext(filename)[0])
 
     # Split version number from filename
-    regex = re.compile(r"[0-9]+(\.[0-9]+){2,3}")
+    regex = re.compile(r"[0-9]+(\.[0-9]+){1,3}")
     ver_lookup = regex.search(pkgname)
 
     # Check if version looking-up is successful
