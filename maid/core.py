@@ -4,10 +4,10 @@ import os
 import wget
 import shutil
 import re
-from error import MaidError
 from urllib.parse import urlparse
 
 # Modules
+from error import MaidError
 from config import maidDir, maidPackDir, maidTempDir
 # import pkgman
 
