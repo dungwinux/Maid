@@ -8,11 +8,13 @@ from urllib.parse import urlparse
 
 
 class pkg:
-    def __init__(self, name, bin_url, sha1, is_local=False):
+    def __init__(self, name, up_url, sha1):
+        # - name: Package name
+        # - up_url: Upstream url, None if local package is added
+        # - sha1: Package's SHA1
         self.name = str(name)
-        self.bin_url = urlparse(bin_url)
+        self.up_url = urlparse(up_url)
         self.sha1 = str(sha1)
-        self.is_local = bool(is_local)
 
     def toJSON(self):
         """Convert package to json"""
@@ -23,7 +25,7 @@ class pkg:
     def is_pkg(p_json):
         """Check if given object is package"""
         if type(p_json) is dict:
-            if not all(key in p_json for key in ('name', 'bin_url', 'sha1')):
+            if not all(key in p_json for key in ('name', 'up_url', 'sha1')):
                 return False
         return True
 
@@ -32,11 +34,12 @@ class pkg:
         """Create new package from json"""
         if pkg.is_pkg(p_json):
             dmp = json.loads(p_json)
-        return cls(dmp['name'], dmp['bin_url'], dmp['sha1'])
+        return cls(dmp['name'], dmp['up_url'], dmp['sha1'])
         # TODO: is_local
 
 
 class pkg_list:
+    """List of package. This class is for import/export function"""
     def __init__(self, filename):
         self.data = []
         data = json.load(filename)
