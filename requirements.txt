@@ -1,0 +1,4 @@
+# core.py
+wget
+requests
+pyinstaller
