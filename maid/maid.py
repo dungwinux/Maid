@@ -33,17 +33,27 @@ if __name__ == "__main__":
         metavar='<command>')
 
     # add sub-command
-    add_parse = subparsers.add_parser('add', help='Add package')
+    add_parse = subparsers.add_parser('add', help='Add package from local path')
     add_parse.add_argument(
         'package',
         type=str,
-        help='Url to package',
-        metavar='<url>')
+        help='Path to package',
+        metavar='<path>')
     # nargs='+'
     add_parse.set_defaults(func=core.add)
 
+    # get sub-command
+    get_parse = subparsers.add_parser('get', help='Get package from url')
+    get_parse.add_argument(
+        'package',
+        type=str,
+        help='Path to package',
+        metavar='<url>')
+    # nargs='+'
+    add_parse.set_defaults(func=core.get)
+
     # rem sub-command
-    rem_parse = subparsers.add_parser('rem', help='Remove package')
+    rem_parse = subparsers.add_parser('rem', help='Remove package from storage')
     rem_parse.add_argument(
         'package',
         type=str,
@@ -53,7 +63,7 @@ if __name__ == "__main__":
     rem_parse.set_defaults(func=core.rem)
 
     # query sub-command
-    que_parse = subparsers.add_parser('que', help='Query package')
+    que_parse = subparsers.add_parser('que', help='Query package from storage')
     que_parse.add_argument(
         'package',
         type=str,
