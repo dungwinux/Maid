@@ -16,12 +16,14 @@ if __name__ == "__main__":
     parser.add_argument(
         '--version',
         action='version',
-        version='%(prog)s Pre-Alpha')
+        version='%(prog)s Alpha')
+
     # TODO: --force argument
     # parser.add_argument(
     #     '--force',
     #     action='store_true'
     # )
+
     # Add subparser to main Parser
     subparsers = parser.add_subparsers(
         help="Maid's sub-command",
