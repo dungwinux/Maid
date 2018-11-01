@@ -57,12 +57,15 @@ def MakeConf():
         try:
             os.mkdir(maidConfDir)
         except:
-            raise MaidError("""Error : could not access Maid configuration directory.
-            An attempt to create it has failed. Check if you can create """ 
+            raise MaidError("""Error : could not find Maid configuration directory.
+            An attempt to create it has failed. Check if you have permission to create """ 
             + maidConfDir)
     
-
-    os.chdir(maidConfDir)
+    try:
+        os.chdir(maidConfDir)
+    except:
+        raise MaidError("""Error : could not access Maid configuration directory."""
+    
     print(f"Config directory: {os.getcwd()}")
 
     # Config file
