@@ -1,8 +1,5 @@
 # Libraries
-import os
 import argparse
-import configparser
-import urllib
 
 # Modules
 import core

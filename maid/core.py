@@ -4,11 +4,11 @@ import os
 import wget
 import shutil
 import re
-from urllib.parse import urlunparse, urlparse
+from urllib.parse import urlparse
 
 # Modules
-from config import maidConfDir, maidDir, maidPackDir, maidTempDir, appPath
-import pkgman
+from config import maidDir, maidPackDir, maidTempDir
+# import pkgman
 
 
 def add(path):
@@ -41,7 +41,8 @@ def add(path):
         ver = '0.0.0'
         name = pkgname
     else:
-        # If version number is found, set name to pkgname that was sliced version number
+        # If version number is found, set name to pkgname that was sliced
+        # version number
         v_begin, v_end = ver_lookup.span()
         # Slice package version
         ver = pkgname[v_begin:v_end]
@@ -68,11 +69,11 @@ def add(path):
         os.makedirs(extractPath)
     # Checking for zip file
     if zipfile.is_zipfile(filepath):
-        # If it is, Maid will extract its content to the new folder in maidPackDir
+        # If it is, Maid will extract its content to pkg folder in maidPackDir
         zipfile.ZipFile(filepath).extractall(path=extractPath)
     else:
         # Else, Maid will copy content to new folder in maidPackDir
-        print('Not zip archive file. Treating downloaded file as extracted package.')
+        print('Not zip archive file. Treating downloaded file as raw.')
         shutil.copy2(filename, extractPath)
 
 
@@ -89,10 +90,6 @@ def get(url):
     url = link.geturl()
     print(f'Starting download from {url}')
 
-    # Change directory to Temp folder
-    # WARNING: Checking for existance is not required since config.py would do this
-    # if not os.path.isdir(maidTempDir):
-    #     os.mkdir(maidTempDir)
     os.chdir(maidTempDir)
 
     # Download package using wget
@@ -127,6 +124,9 @@ def rem(package):
         shutil.rmtree(path)
     else:
         print('Invalid Package')
+
+    # Return
+    os.chdir(cwd)
 
 
 def query(pkg_search):

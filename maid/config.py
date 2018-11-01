@@ -32,8 +32,9 @@ def ReadConf():
         maidPackDir = os.fsencode(conf['options']['packDir'])
     else:
         MakeConf()
-    
+
     prepareDir()
+
 
 def prepareDir():
     if not os.path.isdir(maidDir):
@@ -56,16 +57,18 @@ def MakeConf():
     if not os.path.isdir(maidConfDir):
         try:
             os.mkdir(maidConfDir)
-        except:
-            raise MaidError("""Error : could not find Maid configuration directory.
-            An attempt to create it has failed. Check if you have permission to create """ 
-            + maidConfDir)
-    
+        except os.error:
+            raise MaidError(
+                """Error : could not find Maid configuration directory.
+An attempt to create it has failed. Check if you have permission to create
+    """ + maidConfDir)
+
     try:
         os.chdir(maidConfDir)
-    except:
-        raise MaidError("""Error : could not access Maid configuration directory."""
-    
+    except os.error:
+        raise MaidError(
+            """Error : could not access Maid configuration directory.""")
+
     print(f"Config directory: {os.getcwd()}")
 
     # Config file
@@ -80,16 +83,19 @@ def MakeConf():
         with open(os.fsencode('maid.conf'), 'w') as configfile:
             configfile.write(confHeader)
             config.write(configfile)
-    except:
+    except OSError:
         raise MaidError("Error : could not access maid.conf")
+
 
 def FirstTimeSetup():
 
-    print("Seems like this is the first time Maid is run. Preparing initial setup.")
+    print("Seems like this is the first time Maid is run. \
+    Preparing initial setup.")
 
     prepareDir()
     MakeConf()
     ReadConf()
+
 
 ReadConf()
 
