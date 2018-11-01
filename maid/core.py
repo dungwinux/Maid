@@ -4,6 +4,7 @@ import os
 import wget
 import shutil
 import re
+from error import MaidError
 from urllib.parse import urlparse
 
 # Modules
@@ -21,6 +22,8 @@ def add(path):
     # Get filename from package's path
     filepath = os.fsdecode(os.fsencode(path))
     print(f'[Verbose] filepath: {filepath}')
+    if not os.path.isfile(filepath):
+        raise MaidError("Invalid package")
     filename = os.path.basename(filepath)
     # Here we got:
     # - filepath: path to pacakges
