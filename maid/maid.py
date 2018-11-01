@@ -41,7 +41,7 @@ if __name__ == "__main__":
         help='Path to package',
         metavar='<path>')
     # nargs='+'
-    add_parse.set_defaults(func=core.get)
+    add_parse.set_defaults(func=core.add)
 
     # get sub-command
     get_parse = subparsers.add_parser(
@@ -52,7 +52,7 @@ if __name__ == "__main__":
         help='Path to package',
         metavar='<url>')
     # nargs='+'
-    add_parse.set_defaults(func=core.add)
+    get_parse.set_defaults(func=core.get)
 
     # rem sub-command
     rem_parse = subparsers.add_parser(

@@ -20,6 +20,7 @@ def add(path):
 
     # Get filename from package's path
     filepath = os.fsdecode(os.fsencode(path))
+    print(f'[Verbose] filepath: {filepath}')
     filename = os.path.basename(filepath)
     # Here we got:
     # - filepath: path to pacakges
@@ -28,6 +29,7 @@ def add(path):
     print(f"Reading {filename}")
     # Remove extension from filename to get downloaded package's name
     pkgname = str(os.path.splitext(filename)[0])
+    pkgname = pkgname.split(' ')[0]
 
     # Split version number from filename
     regex = re.compile(r"[0-9]+(\.[0-9]+){1,3}")
