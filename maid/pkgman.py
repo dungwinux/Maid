@@ -13,7 +13,8 @@ class pkg:
         # - up_url: Upstream url, None if local package is added
         # - sha1: Package's SHA1
         self.name = str(name)
-        self.up_url = urlparse(up_url)
+        # NOTE: Need a better way to handle url
+        self.up_url = urlparse(up_url).geturl()
         self.sha1 = str(sha1)
 
     def toJSON(self):
@@ -23,30 +24,30 @@ class pkg:
 
     @staticmethod
     def is_pkg(p_json):
-        """Check if given object is package"""
+        """Check if given json (not file), is package"""
+
         if type(p_json) is dict:
             if not all(key in p_json for key in ('name', 'up_url', 'sha1')):
                 return False
         return True
 
     @classmethod
-    def fromJSON(cls, p_json):
-        """Create new package from json"""
-        if pkg.is_pkg(p_json):
-            dmp = json.loads(p_json)
-        return cls(dmp['name'], dmp['up_url'], dmp['sha1'])
-        # TODO: is_local
+    def fromJSON(cls, filename):
+        """Read package from json file"""
+        with open(filename) as f:
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                return None
+        if pkg.is_pkg(data):
+            return cls(data['name'], data['up_url'], data['sha1'])
 
 
 class pkg_list:
     """List of package. This class is for import/export function"""
-    def __init__(self, filename):
-        self.data = []
-        data = json.load(filename)
-        if type(data) is list:
-            for p in data:
-                if pkg.is_pkg(p):
-                    self.data.append(pkg.fromJSON(p))
+
+    def __init__(self):
+        self.data = list()
 
     def add(self, package: pkg):
         """Append package"""
@@ -55,8 +56,3 @@ class pkg_list:
     def rem(self, package: pkg):
         """Remove package"""
         self.data.remove(pkg)
-
-    # TODO: Low-level API
-
-# Example
-# print(pkg('2049', 'https://www.example.com/', 'sha1').toJSON())
