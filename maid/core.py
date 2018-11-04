@@ -9,10 +9,11 @@ from urllib.parse import urlparse
 # Modules
 from error import MaidError
 from config import maidDir, maidPackDir, maidTempDir
+from util import addPath
 # import pkgman
 
 
-def add(path):
+def add(path, globalize=False):
     """Add package to local storage"""
     # This function will try to:
     # read given package,
@@ -78,6 +79,8 @@ def add(path):
         # Else, Maid will copy content to new folder in maidPackDir
         print('Not zip archive file. Treating downloaded file as raw.')
         shutil.copy2(filename, extractPath)
+    if (globalize):
+        addPath(extractPath)
 
 
 def get(url):
@@ -126,7 +129,7 @@ def rem(package):
     if os.path.isdir(path):
         shutil.rmtree(path)
     else:
-        print('Invalid Package')
+        print('Invalid package')
 
     # Return
     os.chdir(cwd)
@@ -163,7 +166,7 @@ def clear():
 
     print('Clearing temporary package download...')
     if os.path.exists(maidTempDir):
-        shutil.rmtree(maidTempDir)
+        shutil.rmtree(maidTempDir, true, lambda function, path, execinf: print('Error removing ' + path))
 
     if not os.path.exists(maidTempDir):
         os.makedirs(maidTempDir)

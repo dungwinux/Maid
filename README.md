@@ -22,6 +22,7 @@ Maid is a binary package manager, written in Python 3.7, for Windows.
 - `git clone` this repository.
 - `python -r requirements.txt` to install all dependencies
 - `cd` to the `maid` subdirectory, then invoke `maid.py -h`. Supply the `python` command if necessary.
+- Optionally, add `maid` to `$PATH` so that Maid can be called from any directory.
 
 
 ### WIP Features
