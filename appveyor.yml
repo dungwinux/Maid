@@ -1,0 +1,46 @@
+version: 0.1.{build}
+branches:
+  only:
+  - master
+image: Visual Studio 2017
+init:
+- cmd: ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%
+environment:
+  matrix:
+  - PYTHON: C:\Python37-x64
+    PYTHON_VERSION: 3.7
+    PYTHON_ARCH: 64
+  - PYTHON: C:\Python37
+    PYTHON_VERSION: 3.7
+    PYTHON_ARCH: 32
+install:
+- cmd: >-
+    SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
+
+    python --version
+
+    pip install -r requirements.txt
+build_script:
+- cmd: >-
+    python -OO -m PyInstaller --clean --onefile --paths="maid/" maid/maid.py
+
+    cd dist/
+
+    7z a "maid_x%PYTHON_ARCH%.zip" maid.exe
+test: off
+artifacts:
+- path: dist/maid_x32.zip
+  name: Maid - 32bit
+- path: dist/maid_x64.zip
+  name: Maid - 64bit
+deploy:
+- provider: GitHub
+  tag: v${appveyor_build_version}
+  release: maid-${appveyor_build_version}
+  auth_token:
+    secure: gJ1LEN77QKKuYAEtUsWMgPp6uyXuzTVhe0WRvQxIJFABSfuDNcg6xfkb1hbMJ/y3
+  artifact: dist/maid_x32.zip, dist/maid_x64.zip
+  draft: true
+  prerelease: true
+  on:
+    branch: master
