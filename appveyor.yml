@@ -1,4 +1,6 @@
 version: 0.1.{build}
+pull_requests:
+  do_not_increment_build_number: true
 branches:
   only:
   - master
@@ -41,6 +43,6 @@ deploy:
     secure: gJ1LEN77QKKuYAEtUsWMgPp6uyXuzTVhe0WRvQxIJFABSfuDNcg6xfkb1hbMJ/y3
   artifact: dist/maid_x32.zip, dist/maid_x64.zip
   draft: true
-  prerelease: true
+  prerelease: false
   on:
     branch: master
