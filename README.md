@@ -3,8 +3,9 @@ Package manager
 
 Status: **Alpha**
 
-Maid is a binary package manager, written in Python 3.7, for Windows.
+[![Build status](https://ci.appveyor.com/api/projects/status/isl3y0bxqk8kr2ls?svg=true)](https://ci.appveyor.com/project/dungwinux/maid)
 
+Maid is a binary package manager, written in Python 3.7, for Windows.
 
 
 
