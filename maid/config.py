@@ -61,11 +61,15 @@ def prepareDir():
         os.makedirs(maidTempDir)
     if not os.path.isdir(maidBinDir):
         os.makedirs(maidBinDir)
+
     # Add MAID_DIR variable to PATH so that PATH is clean
-    if '%MAID_BIN_DIR%' not in (os.environ['PATH']):
-        os.environ['PATH'].join('%MAID_BIN_DIR%')
+    if '%MAID_BIN_DIR%' not in (os.getenv('PATH')):
+        print("MAID_BIN_DIR not found in PATH. Adding to PATH ...")
+        os.putenv('PATH', os.getenv('PATH').join('%MAID_BIN_DIR%'))
+
     # Set MAID_BIN_DIR to maidBinDir
-    os.environ['MAID_BIN_DIR'] = os.fsdecode(maidBinDir)
+    print('Setting MAID_BIN_DIR value ...')
+    os.putenv('MAID_BIN_DIR', os.fsdecode(maidBinDir))
 
 
 def MakeConf():
@@ -122,7 +126,6 @@ def FirstTimeSetup():
 
 
 ReadConf()
-
 # Check for prepared directory
 # If not, Maid will try to create `maid` file in order to mark folder
 
