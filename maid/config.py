@@ -125,12 +125,10 @@ def FirstTimeSetup():
     ReadConf()
 
 
+# Check for maid.conf file
+# If there's none, run FirstTimeSetup
+
+if os.path.isfile(maidConfFile):
+    FirstTimeSetup()
+
 ReadConf()
-# Check for prepared directory
-# If not, Maid will try to create `maid` file in order to mark folder
-
-# if not os.path.isfile('maid'):
-#     with open('maid', 'w+') as f:
-#         FirstTimeSetup()
-
-# os.chdir(maidConfDir)
