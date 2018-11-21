@@ -15,12 +15,13 @@ maidConfDir = os.fsencode(appPath + '\\maid\\')
 maidTempDir = os.fsencode(os.getenv('TEMP') + '\\maid\\')
 maidPackDir = os.fsencode(os.fsdecode(maidDir) + 'pkg\\')
 maidConfFile = os.fsencode(appPath + '\\maid\\maid.conf')
+maidBinDir = os.fsencode(os.fsdecode(maidDir) + 'bin\\')
 
 
 def ReadConf():
     """Read configuration in designated location"""
 
-    global maidDir, maidConfDir, maidTempDir, maidPackDir
+    global maidDir, maidConfDir, maidTempDir, maidPackDir, maidBinDir
 
     print('[Verbose] Reading config file')
     # Try importing configuration, else maid will make one
@@ -28,10 +29,14 @@ def ReadConf():
         conf = configparser.ConfigParser()
         conf.read(maidConfFile)
 
-        maidDir = os.fsencode(conf['options']['rootDir'])
-        maidConfDir = os.fsencode(conf['options']['confDir'])
-        maidTempDir = os.fsencode(conf['options']['tempDir'])
-        maidPackDir = os.fsencode(conf['options']['packDir'])
+        try:
+            maidDir = os.fsencode(conf['options']['rootDir'])
+            maidConfDir = os.fsencode(conf['options']['confDir'])
+            maidTempDir = os.fsencode(conf['options']['tempDir'])
+            maidPackDir = os.fsencode(conf['options']['packDir'])
+            maidBinDir = os.fsencode(conf['options']['binDir'])
+        except KeyError:
+            MakeConf()
     else:
         MakeConf()
 
@@ -39,6 +44,8 @@ def ReadConf():
 
 
 def prepareDir():
+    """Prepare directories before serving"""
+
     if not os.path.isdir(maidDir):
         os.makedirs(maidDir)
     if not os.path.isdir(maidConfDir):
@@ -47,12 +54,14 @@ def prepareDir():
         os.makedirs(maidPackDir)
     if not os.path.isdir(maidTempDir):
         os.makedirs(maidTempDir)
+    if not os.path.isdir(maidBinDir):
+        os.makedirs(maidBinDir)
 
 
 def MakeConf():
     """Create new configuration in designated location"""
 
-    global maidDir, maidConfDir, maidTempDir, maidPackDir
+    global maidDir, maidConfDir, maidTempDir, maidPackDir, maidBinDir
 
     # Maid config.maidDir
     print('[Verbose] Creating config file')
@@ -62,8 +71,8 @@ def MakeConf():
         except os.error:
             raise MaidError(
                 """Error : could not find Maid configuration directory.
-An attempt to create it has failed. Check if you have permission to create
-    """ + maidConfDir)
+An attempt to create it has failed. Check if you have permission to create"""
+                + maidConfDir)
 
     try:
         os.chdir(maidConfDir)
@@ -80,7 +89,9 @@ An attempt to create it has failed. Check if you have permission to create
         'confDir': os.fsdecode(maidConfDir),
         'tempDir': os.fsdecode(maidTempDir),
         'packDir': os.fsdecode(maidPackDir),
+        'binDir': os.fsdecode(maidBinDir),
         'logFile': ''}
+    # TODO: write logfile
     try:
         with open(os.fsencode('maid.conf'), 'w') as configfile:
             configfile.write(confHeader)
@@ -90,6 +101,7 @@ An attempt to create it has failed. Check if you have permission to create
 
 
 def FirstTimeSetup():
+    """Set of commands to run when Maid is run for the first time"""
 
     print("Seems like this is the first time Maid is run. \
     Preparing initial setup.")
