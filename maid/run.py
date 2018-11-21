@@ -4,6 +4,7 @@ from config import maidDir, maidPackDir, maidBinDir
 
 
 def bin_walk(pkg_name, fun):
+    print("""Searching for binaries & executables ...""")
     src = os.path.join(os.fsdecode(maidPackDir), pkg_name) + '\\'
     for path, dirs, files in os.walk(src):
         if path[len(src) + 1:].count(os.sep) < 2:
@@ -15,14 +16,12 @@ def bin_walk(pkg_name, fun):
 def bin_search(pkg_name):
     """Search binaries and executables then hard-link to bin/ folder"""
 
-    print("""Searching for binaries & executables ...""")
     bin_walk(pkg_name, linkBin)
 
 
 def link_rem(pkg_name):
     """Search hard-link of binaries and executables then delete"""
 
-    print("""Searching for binaries & executables ...""")
     bin_walk(pkg_name, unlinkBin)
 
 
@@ -43,3 +42,5 @@ def unlinkBin(path, file):
     if os.path.isfile(link):
         print("Unlink:", link)
         os.remove(link)
+    else:
+        print("Missing link:", link)
