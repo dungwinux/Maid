@@ -27,7 +27,7 @@ def ReadConf():
 
     global maidDir, maidConfDir, maidTempDir, maidPackDir, maidBinDir
 
-    print('[Verbose] Reading config file')
+    print('[Verbose] Try reading config file')
     # Try importing configuration, else maid will make one
     if os.path.isfile(maidConfFile):
         conf = configparser.ConfigParser()
@@ -41,9 +41,11 @@ def ReadConf():
             maidPackDir = os.fsencode(conf['options']['packDir'])
             maidBinDir = os.fsencode(conf['options']['binDir'])
         except KeyError:
+            # Run MakeConf if there's at least one broken path
             MakeConf()
     else:
-        MakeConf()
+        # Run FirstTimeSetup if maidConfFile is not available
+        FirstTimeSetup()
 
     prepareDir()
 
@@ -62,14 +64,15 @@ def prepareDir():
     if not os.path.isdir(maidBinDir):
         os.makedirs(maidBinDir)
 
+    # TODO: Make MAID_BIN_DIR persistent in PATH
     # Add MAID_DIR variable to PATH so that PATH is clean
-    if '%MAID_BIN_DIR%' not in (os.getenv('PATH')):
-        print("MAID_BIN_DIR not found in PATH. Adding to PATH ...")
-        os.putenv('PATH', os.getenv('PATH').join('%MAID_BIN_DIR%'))
+    # if '%MAID_BIN_DIR%' not in (os.getenv('PATH')):
+    #     print("MAID_BIN_DIR not found in PATH. Adding to PATH ...")
+    #     os.putenv('PATH', os.getenv('PATH').join('%MAID_BIN_DIR%'))
 
     # Set MAID_BIN_DIR to maidBinDir
-    print('Setting MAID_BIN_DIR value ...')
-    os.putenv('MAID_BIN_DIR', os.fsdecode(maidBinDir))
+    # print('Setting MAID_BIN_DIR value ...')
+    # os.putenv('MAID_BIN_DIR', os.fsdecode(maidBinDir))
 
 
 def MakeConf():
@@ -96,7 +99,7 @@ An attempt to create it has failed. Check if you have permission to create"""
 
     print("Config directory:", os.getcwd())
 
-    # Config file
+    # Config setting
     config = configparser.ConfigParser()
     config['options'] = {
         'rootDir': os.fsdecode(maidDir),
@@ -107,6 +110,7 @@ An attempt to create it has failed. Check if you have permission to create"""
         'logFile': ''}
     # TODO: write logfile
     try:
+        # Write Config to maidConfFile
         with open(os.fsencode(maidConfFile), 'w') as configfile:
             configfile.write(confHeader)
             config.write(configfile)
@@ -127,8 +131,5 @@ def FirstTimeSetup():
 
 # Check for maid.conf file
 # If there's none, run FirstTimeSetup
-
-if os.path.isfile(maidConfFile):
-    FirstTimeSetup()
 
 ReadConf()
