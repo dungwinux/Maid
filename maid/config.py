@@ -34,6 +34,7 @@ def ReadConf():
         conf.read(maidConfFile)
 
         try:
+            # TODO: Sanitize string path
             maidDir = os.fsencode(conf['options']['rootDir'])
             maidConfDir = os.fsencode(conf['options']['confDir'])
             maidTempDir = os.fsencode(conf['options']['tempDir'])
@@ -60,6 +61,11 @@ def prepareDir():
         os.makedirs(maidTempDir)
     if not os.path.isdir(maidBinDir):
         os.makedirs(maidBinDir)
+    # Add MAID_DIR variable to PATH so that PATH is clean
+    if '%MAID_BIN_DIR%' not in (os.environ['PATH']):
+        os.environ['PATH'].join('%MAID_BIN_DIR%')
+    # Set MAID_BIN_DIR to maidBinDir
+    os.environ['MAID_BIN_DIR'] = os.fsdecode(maidBinDir)
 
 
 def MakeConf():
@@ -84,7 +90,7 @@ An attempt to create it has failed. Check if you have permission to create"""
         raise MaidError(
             """Error : could not access Maid configuration directory.""")
 
-    print(f"Config directory: {os.getcwd()}")
+    print("Config directory:", os.getcwd())
 
     # Config file
     config = configparser.ConfigParser()
