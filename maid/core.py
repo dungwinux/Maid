@@ -7,6 +7,7 @@ import re
 from urllib.parse import urlparse
 
 # Modules
+from run import bin_search, link_rem
 from error import MaidError
 from config import maidDir, maidPackDir, maidTempDir
 # import pkgman
@@ -79,6 +80,8 @@ def add(path):
         print('Not zip archive file. Treating downloaded file as raw.')
         shutil.copy2(filename, extractPath)
 
+    bin_search(name)
+
 
 def get(url):
     """Retrieve package with specified url"""
@@ -124,6 +127,7 @@ def rem(package):
     # system files
     path = package + '\\'
     if os.path.isdir(path):
+        link_rem(package)
         shutil.rmtree(path)
     else:
         print('Invalid Package')
