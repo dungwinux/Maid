@@ -18,7 +18,7 @@ def bin_walk(pkg_name, fun):
             for file in files:
                 # Filter executables
                 if os.path.splitext(file)[-1] in ['.exe', '.reg', '.bat']:
-                    print("Found:", file)
+                    print("Found:", os.path.join(path, file))
                     fun(path, file)
 
 
