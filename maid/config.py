@@ -15,11 +15,11 @@ maidConfFile = os.fsencode(appPath + '\\maid\\maid.conf')
 
 
 # Default directory
-maidDir = os.fsencode(os.getcwd() + '\\maid\\')
-maidConfDir = os.fsencode(appPath + '\\maid\\')
-maidTempDir = os.fsencode(os.getenv('TEMP') + '\\maid\\')
-maidPackDir = os.fsencode(os.fsdecode(maidDir) + 'pkg\\')
-maidBinDir = os.fsencode(os.fsdecode(maidDir) + 'bin\\')
+maidDir = os.fsencode(os.path.join(os.getcwd(), '\\maid\\'))
+maidConfDir = os.fsencode(os.path.join(appPath, '\\maid\\'))
+maidTempDir = os.fsencode(os.path.join(os.getenv('TEMP'), '\\maid\\'))
+maidPackDir = os.fsencode(os.path.join(os.fsdecode(maidDir), 'pkg\\'))
+maidBinDir = os.fsencode(os.path.join(os.fsdecode(maidDir), 'bin\\'))
 
 
 def ReadConf():
