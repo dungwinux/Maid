@@ -1,10 +1,11 @@
 # Libraries
-import zipfile
 import os
 import wget
 import shutil
 import re
 from urllib.parse import urlparse
+from patoolib import extract_archive
+from patoolib.util import PatoolError
 
 # Modules
 from run import bin_search, link_rem
@@ -64,20 +65,21 @@ def add(path):
     # - sha1: (TODO) Sha1 of downloaded package
 
     # Get extract path by concatenating maidPackDir and name
-    extractPath = os.fsdecode(maidPackDir) + name
+    extractPath = os.path.join(os.fsdecode(maidPackDir), name)
     # Verbose
     print(f'Extracting to {extractPath} ...')
 
     # Extract package to maidPkgDir
-    if not os.path.isdir(extractPath):
-        os.makedirs(extractPath)
+    # if not os.path.isdir(extractPath):
+    #     os.makedirs(extractPath)
     # Checking for zip file
-    if zipfile.is_zipfile(filepath):
-        # If it is, Maid will extract its content to pkg folder in maidPackDir
-        zipfile.ZipFile(filepath).extractall(path=extractPath)
-    else:
-        # Else, Maid will copy content to new folder in maidPackDir
-        print('Not zip archive file. Treating downloaded file as raw.')
+
+    try:
+        extract_archive(filepath, outdir=extractPath, interactive=False)
+        print("Extraction completed.")
+    except PatoolError as msg:
+        print(f"Extractor error: {msg}")
+        print('Treating downloaded file as raw.')
         shutil.copy2(filename, extractPath)
 
     bin_search(name)
