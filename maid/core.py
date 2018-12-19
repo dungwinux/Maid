@@ -4,6 +4,7 @@ import wget
 import shutil
 import re
 from urllib.parse import urlparse
+from urllib.error import URLError
 from patoolib import extract_archive
 from patoolib.util import PatoolError
 
@@ -85,30 +86,44 @@ def add(path):
     bin_search(name)
 
 
-def get(url):
-    """Retrieve package with specified url"""
+def get(package):
+    """Retrieve package with specified url or local path"""
     # This function will try to:
     # download package from url,
     # put it in maidTempFolder and
     # call add API on it
 
-    # Get formal url from given url string by parsing it
-    # (Who know, someone might try to break the Maid)
-    link = urlparse(url)
-    url = link.geturl()
-    print(f'Starting download from {url}')
+    try:
+        # Get formal url from given url string by parsing it
+        # (Who know, someone might try to break the Maid)
+        link = urlparse(package)
+        url = link.geturl()
 
-    os.chdir(maidTempDir)
+        # Download package using wget
+        os.chdir(maidTempDir)
 
-    # Download package using wget
-    filename = wget.download(url)
-    print(f'\nDownloaded {filename}')
+        print(f"[Verbose] Starting download from {url}")
+        filename = wget.download(url)
+        print()
+        print(f'[Verbose]Downloaded {filename}')
+
+        os.chdir(maidDir)
+        # If things work well, it will set pkgPath to downloaded file location
+        pkgPath = os.path.join(os.fsdecode(maidTempDir), filename)
+
+    except ValueError as msg:
+        # If ValueError is caught, Maid think given string is a local package
+        print(f"[Verbose] {msg}")
+        print("Invalid URL. Treating given string as local package")
+        pkgPath = package
+
+    except URLError as msg:
+        # If URLError is caught, it's either network fault or your fault
+        print(f"[Verbose] {msg}")
+        raise MaidError("Cannot get from given URL")
 
     # Call add API on downloaded package
-    add(os.fsdecode(maidTempDir) + filename)
-
-    # UNUSED: Change current working directory to main directory
-    os.chdir(maidDir)
+    add(pkgPath)
 
 
 def rem(package):
