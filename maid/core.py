@@ -5,7 +5,7 @@ import shutil
 import re
 from urllib.parse import urlparse
 from urllib.error import URLError
-from patoolib import extract_archive
+from patoolib import extract_archive, list_formats
 from patoolib.util import PatoolError
 
 # Modules

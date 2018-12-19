@@ -69,6 +69,11 @@ if __name__ == "__main__":
         'cle', help='Clear temporary package downloads')
     cle_parse.set_defaults(func=core.clear)
 
+    # arc-support sub-command
+    sup_parse = subparsers.add_parser(
+        'sup', help='Show supported archive format on this machine')
+    sup_parse.set_defaults(func=core.list_formats)
+
     # Call argument parser
     args = parser.parse_args()
     # Checking for argument
