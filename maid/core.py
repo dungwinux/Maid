@@ -81,7 +81,7 @@ def add(path):
     except PatoolError as msg:
         print(f"Extractor error: {msg}")
         print('Treating downloaded file as raw.')
-        shutil.copy2(filename, extractPath)
+        shutil.copy2(filepath, extractPath)
 
     bin_search(name)
 
@@ -105,7 +105,7 @@ def get(package):
         print(f"[Verbose] Starting download from {url}")
         filename = wget.download(url)
         print()
-        print(f'[Verbose]Downloaded {filename}')
+        print(f'[Verbose] Downloaded {filename}')
 
         os.chdir(maidDir)
         # If things work well, it will set pkgPath to downloaded file location
