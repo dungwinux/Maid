@@ -7,11 +7,12 @@ from urllib.parse import urlparse
 from urllib.error import URLError
 from patoolib import extract_archive, list_formats
 from patoolib.util import PatoolError
+from tempfile import TemporaryDirectory
 
 # Modules
 from run import bin_search, link_rem
 from error import MaidError
-from config import maidDir, maidPackDir, maidTempDir
+from config import maidPackDir, maidTempDir
 # import pkgman
 
 
@@ -93,37 +94,44 @@ def get(package):
     # put it in maidTempFolder and
     # call add API on it
 
-    try:
-        # Get formal url from given url string by parsing it
-        # (Who know, someone might try to break the Maid)
-        link = urlparse(package)
-        url = link.geturl()
+    with TemporaryDirectory(dir=maidTempDir) as tmpdir:
+        try:
+            # Get formal url from given url string by parsing it
+            # (Who know, someone might try to break the Maid)
+            link = urlparse(package)
+            url = link.geturl()
 
-        # Download package using wget
-        os.chdir(maidTempDir)
+            downloadDir = tmpdir
 
-        print(f"[Verbose] Starting download from {url}")
-        filename = wget.download(url)
-        print()
-        print(f'[Verbose] Downloaded {filename}')
+            # Download package using wget
 
-        os.chdir(maidDir)
-        # If things work well, it will set pkgPath to downloaded file location
-        pkgPath = os.path.join(os.fsdecode(maidTempDir), filename)
+            print(f"[Verbose] Starting download from {url}")
 
-    except ValueError as msg:
-        # If ValueError is caught, Maid think given string is a local package
-        print(f"[Verbose] {msg}")
-        print("Invalid URL. Treating given string as local package")
-        pkgPath = package
+            cwd = os.getcwd()
+            os.chdir(downloadDir)
+            filename = wget.download(url)
+            os.chdir(cwd)
 
-    except URLError as msg:
-        # If URLError is caught, it's either network fault or your fault
-        print(f"[Verbose] {msg}")
-        raise MaidError("Cannot get from given URL")
+            print()
+            print(f'[Verbose] Downloaded {filename}')
+
+            # If things work well, it will set pkgPath to downloaded file
+            pkgPath = os.path.join(os.fsdecode(downloadDir), filename)
+
+        except ValueError as msg:
+            # If ValueError is caught, Maid think given string is local
+            print(f"[Verbose] {msg}")
+            print("Invalid URL. Treating given string as local package")
+            pkgPath = package
+
+        except URLError as msg:
+            # If URLError is caught, it's either network fault or your fault
+            print(f"[Verbose] {msg}")
+            raise MaidError("Cannot get from given URL")
+
+        add(pkgPath)
 
     # Call add API on downloaded package
-    add(pkgPath)
 
 
 def rem(package):
