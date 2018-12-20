@@ -1,5 +1,6 @@
 """
-patoolib uses importlib and pyinstaller doesn't find it
+patoolib uses importlib and pyinstaller doesn't find it.
+Refer to https://github.com/pyinstaller/pyinstaller/issues/3013
 """
 
 
