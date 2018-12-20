@@ -6,6 +6,7 @@ from wget import download
 from urllib.parse import urlparse
 from urllib.error import URLError
 from patoolib import extract_archive, list_formats, programs
+from patoolib.programs import *
 from patoolib.util import PatoolError
 from tempfile import mkdtemp
 
