@@ -58,6 +58,8 @@ artifacts:
   name: Maid - 32bit
 - path: dist/maid_x64.zip
   name: Maid - 64bit
+- path: maid.spec
+  name: Maid - PyInstaller spec
 deploy:
 - provider: GitHub
   tag: v${appveyor_build_version}
