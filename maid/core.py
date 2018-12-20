@@ -1,15 +1,18 @@
 # Libraries
-import zipfile
 import os
-import wget
 import shutil
 import re
+from wget import download
 from urllib.parse import urlparse
+from urllib.error import URLError
+from patoolib import extract_archive, list_formats, programs
+from patoolib.util import PatoolError
+from tempfile import mkdtemp
 
 # Modules
 from run import bin_search, link_rem
 from error import MaidError
-from config import maidDir, maidPackDir, maidTempDir
+from config import maidPackDir, maidTempDir
 # import pkgman
 
 
@@ -50,9 +53,10 @@ def add(path):
         v_begin, v_end = ver_lookup.span()
         # Slice package version
         ver = pkgname[v_begin:v_end]
-        print(f'[Verbose] Package version detected: {ver}')
+        print(f'Package version detected: {ver}')
         name = pkgname[:v_begin - 1]
         name = name + pkgname[v_end:]
+
     # TODO: Compare package's version with installed package
 
     # TODO: Compare SHA1 with installed package
@@ -63,50 +67,76 @@ def add(path):
     # - ver: Version of program inside package
     # - sha1: (TODO) Sha1 of downloaded package
 
-    # Get extract path by concatenating maidPackDir and name
-    extractPath = os.fsdecode(maidPackDir) + name
-    # Verbose
-    print(f'Extracting to {extractPath} ...')
+    # Get extract path by joining path of maidPackDir and name
+    extractPath = os.path.join(os.fsdecode(maidPackDir), name)
 
-    # Extract package to maidPkgDir
-    if not os.path.isdir(extractPath):
-        os.makedirs(extractPath)
-    # Checking for zip file
-    if zipfile.is_zipfile(filepath):
-        # If it is, Maid will extract its content to pkg folder in maidPackDir
-        zipfile.ZipFile(filepath).extractall(path=extractPath)
-    else:
-        # Else, Maid will copy content to new folder in maidPackDir
-        print('Not zip archive file. Treating downloaded file as raw.')
-        shutil.copy2(filename, extractPath)
+    try:
+        print(f'Trying to extract to {extractPath} ...')
+        # Extract package to maidPkgDir
+        # If path is invalid, patool will make dirs recursively
+        extract_archive(filepath, outdir=extractPath, interactive=False)
+        print("Extraction completed.")
 
+    except PatoolError as msg:
+        # In case the package is not extractable, Maid treat it as raw
+        print(f"Extractor error: {msg}")
+        print('Treating downloaded file as raw.')
+        shutil.copy2(filepath, extractPath)
+
+    # Recursively looking for executable binaries
     bin_search(name)
 
 
-def get(url):
-    """Retrieve package with specified url"""
+def get(package):
+    """Retrieve package with specified url or local path"""
     # This function will try to:
     # download package from url,
     # put it in maidTempFolder and
     # call add API on it
 
-    # Get formal url from given url string by parsing it
-    # (Who know, someone might try to break the Maid)
-    link = urlparse(url)
-    url = link.geturl()
-    print(f'Starting download from {url}')
+    try:
+        # Get formal url from given url string by parsing it
+        # (Who know, someone might try to break the Maid)
 
-    os.chdir(maidTempDir)
+        # Try parsing package string as url
+        link = urlparse(package)
+        # If link.netloc is empty string, `package` probably isn't URL
+        if (link.netloc == ""):
+            raise ValueError("Invalid URL")
+        # Else, get url after parsing
+        url = link.geturl()
 
-    # Download package using wget
-    filename = wget.download(url)
-    print(f'\nDownloaded {filename}')
+        print(f"[Verbose] Starting download from {url}")
+
+        # Create temporary directory for putting download file in
+        # This way, downloaded files won't be conflict with each other
+        downloadDir = mkdtemp(dir=maidTempDir)
+        cwd = os.getcwd()
+        # Download package using wget
+        os.chdir(downloadDir)
+        filename = download(url)
+        os.chdir(cwd)
+
+        print()
+        print(f'[Verbose] Downloaded {filename}')
+
+        # If things work well, it will set pkgPath to downloaded file
+        pkgPath = os.path.join(os.fsdecode(downloadDir), filename)
+
+    except ValueError as msg:
+        # If ValueError is caught, Maid think given string is local
+        print(f"[Verbose] {msg}")
+        print("Invalid URL. Treating given string as local package")
+        # Set pkgPath as package for later call
+        pkgPath = package
+
+    except URLError as msg:
+        # If URLError is caught, it's either network fault or your fault
+        print(f"[Verbose] {msg}")
+        raise MaidError("Cannot get from given URL")
 
     # Call add API on downloaded package
-    add(os.fsdecode(maidTempDir) + filename)
-
-    # UNUSED: Change current working directory to main directory
-    os.chdir(maidDir)
+    add(pkgPath)
 
 
 def rem(package):
@@ -173,23 +203,23 @@ def clear():
         os.makedirs(maidTempDir)
 
 
-def import_pkg(path):
-    """Import packages list"""
-    # This function will try to:
-    # read package list from path and if it is:
-    #         url -> call get API
-    # local files -> call add API
+# def import_pkg(path):
+#     """Import packages list"""
+#     # This function will try to:
+#     # read package list from path and if it is:
+#     #         url -> call get API
+#     # local files -> call add API
 
-    # TODO: import package list from path and call proper function to handle
+#     # TODO: import package list from path and call proper function to handle
 
 
-def export_pkg(path):
-    """Export packages list"""
-    # This function will try to:
-    # read all available packages and
-    # return a package list in path
+# def export_pkg(path):
+#     """Export packages list"""
+#     # This function will try to:
+#     # read all available packages and
+#     # return a package list in path
 
-    # TODO: Query a package list and export to path
+#     # TODO: Query a package list and export to path
 
 
 # TODO: Integrate pkgman.py function to handle package or,

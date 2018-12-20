@@ -18,7 +18,7 @@ if __name__ == "__main__":
         action='version',
         version='%(prog)s Alpha')
 
-    # TODO: --force argument
+    # TODO: --force, --verbose argument
     # parser.add_argument(
     #     '--force',
     #     action='store_true'
@@ -31,25 +31,14 @@ if __name__ == "__main__":
         required=True,
         metavar='<command>')
 
-    # add sub-command
-    add_parse = subparsers.add_parser(
-        'add', help='Add package from local path')
-    add_parse.add_argument(
-        'package',
-        type=str,
-        help='Path to package',
-        metavar='<path>')
-    # nargs='+'
-    add_parse.set_defaults(func=core.add)
-
     # get sub-command
     get_parse = subparsers.add_parser(
-        'get', help='Get package from url')
+        'get', help='Get package from url/local path')
     get_parse.add_argument(
         'package',
         type=str,
-        help='Path to package',
-        metavar='<url>')
+        help=f'Url or path to package',
+        metavar='<url/path>')
     # nargs='+'
     get_parse.set_defaults(func=core.get)
 
@@ -79,6 +68,11 @@ if __name__ == "__main__":
     cle_parse = subparsers.add_parser(
         'cle', help='Clear temporary package downloads')
     cle_parse.set_defaults(func=core.clear)
+
+    # arc-support sub-command
+    sup_parse = subparsers.add_parser(
+        'sup', help='Show supported archive format on this machine')
+    sup_parse.set_defaults(func=core.list_formats)
 
     # Call argument parser
     args = parser.parse_args()
