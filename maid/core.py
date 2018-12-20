@@ -53,9 +53,10 @@ def add(path):
         v_begin, v_end = ver_lookup.span()
         # Slice package version
         ver = pkgname[v_begin:v_end]
-        print(f'[Verbose] Package version detected: {ver}')
+        print(f'Package version detected: {ver}')
         name = pkgname[:v_begin - 1]
         name = name + pkgname[v_end:]
+
     # TODO: Compare package's version with installed package
 
     # TODO: Compare SHA1 with installed package
@@ -66,24 +67,23 @@ def add(path):
     # - ver: Version of program inside package
     # - sha1: (TODO) Sha1 of downloaded package
 
-    # Get extract path by concatenating maidPackDir and name
+    # Get extract path by joining path of maidPackDir and name
     extractPath = os.path.join(os.fsdecode(maidPackDir), name)
-    # Verbose
-    print(f'Extracting to {extractPath} ...')
-
-    # Extract package to maidPkgDir
-    # if not os.path.isdir(extractPath):
-    #     os.makedirs(extractPath)
-    # Checking for zip file
 
     try:
+        print(f'Trying to extract to {extractPath} ...')
+        # Extract package to maidPkgDir
+        # If path is invalid, patool will make dirs recursively
         extract_archive(filepath, outdir=extractPath, interactive=False)
         print("Extraction completed.")
+
     except PatoolError as msg:
+        # In case the package is not extractable, Maid treat it as raw
         print(f"Extractor error: {msg}")
         print('Treating downloaded file as raw.')
         shutil.copy2(filepath, extractPath)
 
+    # Recursively looking for executable binaries
     bin_search(name)
 
 
@@ -97,18 +97,22 @@ def get(package):
     try:
         # Get formal url from given url string by parsing it
         # (Who know, someone might try to break the Maid)
-        tmpdir = mkdtemp(dir=maidTempDir)
+
+        # Try parsing package string as url
         link = urlparse(package)
+        # If link.netloc is empty string, `package` probably isn't URL
         if (link.netloc == ""):
             raise ValueError("Invalid URL")
+        # Else, get url after parsing
         url = link.geturl()
-
-        # Download package using wget
 
         print(f"[Verbose] Starting download from {url}")
 
-        downloadDir = tmpdir
+        # Create temporary directory for putting download file in
+        # This way, downloaded files won't be conflict with each other
+        downloadDir = mkdtemp(dir=maidTempDir)
         cwd = os.getcwd()
+        # Download package using wget
         os.chdir(downloadDir)
         filename = download(url)
         os.chdir(cwd)
@@ -123,6 +127,7 @@ def get(package):
         # If ValueError is caught, Maid think given string is local
         print(f"[Verbose] {msg}")
         print("Invalid URL. Treating given string as local package")
+        # Set pkgPath as package for later call
         pkgPath = package
 
     except URLError as msg:
@@ -130,9 +135,8 @@ def get(package):
         print(f"[Verbose] {msg}")
         raise MaidError("Cannot get from given URL")
 
-    add(pkgPath)
-
     # Call add API on downloaded package
+    add(pkgPath)
 
 
 def rem(package):
@@ -199,23 +203,23 @@ def clear():
         os.makedirs(maidTempDir)
 
 
-def import_pkg(path):
-    """Import packages list"""
-    # This function will try to:
-    # read package list from path and if it is:
-    #         url -> call get API
-    # local files -> call add API
+# def import_pkg(path):
+#     """Import packages list"""
+#     # This function will try to:
+#     # read package list from path and if it is:
+#     #         url -> call get API
+#     # local files -> call add API
 
-    # TODO: import package list from path and call proper function to handle
+#     # TODO: import package list from path and call proper function to handle
 
 
-def export_pkg(path):
-    """Export packages list"""
-    # This function will try to:
-    # read all available packages and
-    # return a package list in path
+# def export_pkg(path):
+#     """Export packages list"""
+#     # This function will try to:
+#     # read all available packages and
+#     # return a package list in path
 
-    # TODO: Query a package list and export to path
+#     # TODO: Query a package list and export to path
 
 
 # TODO: Integrate pkgman.py function to handle package or,
