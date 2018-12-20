@@ -30,7 +30,25 @@ build_script:
     cd dist/
 
     7z a "maid_x%PYTHON_ARCH%.zip" maid.exe
-test: off
+test_script:
+- cmd: >-
+    maid get "maid_x%PYTHON_ARCH%.zip"
+
+    maid rem "maid_x%PYTHON_ARCH%"
+
+    maid get "https://github.com/dungwinux/Maid/releases/download/v0.1.6/maid_x64.zip"
+
+    maid rem "maid_x64"
+
+    maid get https://github.com/dungwinux/Maid/releases/download/v0.1/maid.exe
+
+    maid rem maid
+
+    maid que
+
+    maid cle
+
+    maid sup
 artifacts:
 - path: dist/maid_x32.zip
   name: Maid - 32bit
