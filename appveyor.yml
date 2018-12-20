@@ -38,11 +38,9 @@ test_script:
 
     maid get "https://github.com/dungwinux/Maid/releases/download/v0.1.6/maid_x64.zip"
 
-    maid rem "maid_x64"
-
     maid get https://github.com/dungwinux/Maid/releases/download/v0.1/maid.exe
 
-    maid rem maid
+    tree .
 
     maid que
 
