@@ -32,6 +32,10 @@ build_script:
     7z a "maid_x%PYTHON_ARCH%.zip" maid.exe
 test_script:
 - cmd: >-
+    echo ====BEGIN TESTING====
+
+    where maid
+
     maid get "maid_x%PYTHON_ARCH%.zip"
 
     maid rem "maid_x%PYTHON_ARCH%"
@@ -47,6 +51,8 @@ test_script:
     maid cle
 
     maid sup
+
+    echo =====END TESTING=====
 artifacts:
 - path: dist/maid_x32.zip
   name: Maid - 32bit
