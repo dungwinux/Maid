@@ -53,16 +53,11 @@ def ReadConf():
 def prepareDir():
     """Prepare directories before serving"""
 
-    if not os.path.isdir(maidDir):
-        os.makedirs(maidDir)
-    if not os.path.isdir(maidConfDir):
-        os.makedirs(maidConfDir)
-    if not os.path.isdir(maidPackDir):
-        os.makedirs(maidPackDir)
-    if not os.path.isdir(maidTempDir):
-        os.makedirs(maidTempDir)
-    if not os.path.isdir(maidBinDir):
-        os.makedirs(maidBinDir)
+    os.makedirs(maidDir, exist_ok=True)
+    os.makedirs(maidConfDir, exist_ok=True)
+    os.makedirs(maidPackDir, exist_ok=True)
+    os.makedirs(maidTempDir, exist_ok=True)
+    os.makedirs(maidBinDir, exist_ok=True)
 
     # TODO: Make MAID_BIN_DIR persistent in PATH
     # Add MAID_DIR variable to PATH so that PATH is clean
