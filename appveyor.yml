@@ -38,19 +38,15 @@ test_script:
     
     tree /f .
 
-    maid
-
-    tree /f .
-
-    maid get "maid_x%PYTHON_ARCH%.zip"
-
-    maid rem "maid_x%PYTHON_ARCH%"
+    maid -h
 
     maid get "https://github.com/dungwinux/Maid/releases/download/v0.1.6/maid_x64.zip"
 
     maid get https://github.com/dungwinux/Maid/releases/download/v0.1/maid.exe
 
     maid que
+
+    maid rem maid
 
     maid cle
 
