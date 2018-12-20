@@ -38,6 +38,10 @@ test_script:
     
     tree /f .
 
+    maid
+
+    tree /f .
+
     maid get "maid_x%PYTHON_ARCH%.zip"
 
     maid rem "maid_x%PYTHON_ARCH%"
