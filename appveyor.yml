@@ -36,7 +36,7 @@ test_script:
 
     where maid
     
-    tree .
+    tree /f .
 
     maid get "maid_x%PYTHON_ARCH%.zip"
 
