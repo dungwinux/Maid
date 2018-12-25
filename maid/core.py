@@ -72,8 +72,10 @@ def add(path):
 
     try:
         print(f'Trying to extract to {extractPath} ...')
+        # If path is invalid, create one
+        if not os.path.isdir(extractPath):
+            os.mkdir(extractPath)
         # Extract package to maidPkgDir
-        # If path is invalid, patool will make dirs recursively
         extract_archive(filepath, outdir=extractPath, interactive=False)
         print("Extraction completed.")
 
