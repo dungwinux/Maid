@@ -18,7 +18,12 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/dungwinux/Maid",
     packages=['maid'],
-    install_requires=['wget', 'patool', 'pywin32', 'winshell'],
+    install_requires=[
+        'wget>=3.2',
+        'patool>=1.12',
+        'pywin32>=224',
+        'winshell>=0.6'
+    ],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Operating System :: Microsoft :: Windows :: Windows 7",
