@@ -1,6 +1,6 @@
 import os
 from winshell import shortcut
-from config import maidPackDir, maidBinDir
+from .config import maidPackDir, maidBinDir
 
 
 def bin_walk(pkg_name, fun):
