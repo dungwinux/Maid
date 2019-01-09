@@ -2,7 +2,7 @@ from setuptools import setup
 
 version = {}
 
-with open("...maid/version.py") as fp:
+with open("maid/version.py") as fp:
     exec(fp.read(), version)
 
 with open("README.md", "r") as readline:
