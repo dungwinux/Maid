@@ -29,7 +29,8 @@ def ReadConf():
 
     global maidDir, maidConfDir, maidTempDir, maidPackDir, maidBinDir
 
-    print('[Verbose] Try reading config file')
+    # Try reading config file
+
     # Try importing configuration, else maid will make one
     if os.path.isfile(maidConfFile):
         conf = configparser.ConfigParser()
@@ -78,7 +79,7 @@ def MakeConf():
     global maidDir, maidConfDir, maidTempDir, maidPackDir, maidBinDir
 
     # Maid config.maidDir
-    print('[Verbose] Creating config file')
+    print('Maid is creating config file for the first time')
     if not os.path.isdir(maidConfDir):
         try:
             os.mkdir(maidConfDir)
