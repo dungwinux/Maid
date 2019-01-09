@@ -5,8 +5,7 @@ Status: **Alpha**
 
 [![Build status](https://ci.appveyor.com/api/projects/status/isl3y0bxqk8kr2ls?svg=true)](https://ci.appveyor.com/project/dungwinux/maid)
 
-Maid is a binary package manager, written in Python 3.7, for Windows.
-
+Maid is a package manager, written in Python 3.7, for Windows.
 
 
 ### Installation
@@ -22,13 +21,4 @@ Maid is a binary package manager, written in Python 3.7, for Windows.
 
 - `git clone` this repository.
 - `python -r requirements.txt` to install all dependencies
-- `cd` to the `maid` subdirectory, then invoke `maid.py -h`. Supply the `python` command if necessary.
-
-
-### WIP Features
-
-- [x] Environment Setup
-- [x] Command-line interface
-- [ ] Import/Export package list
-    - [ ] Binding package
-- [ ] Read MSI package
+- `cd` to the `maid` subdirectory, then invoke `python -m maid -h`. Supply the `python` command if necessary.

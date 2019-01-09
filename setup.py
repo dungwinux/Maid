@@ -11,6 +11,7 @@ with open("README.md", "r") as readline:
 setup(
     name="maid",
     version=version['__version__'],
+    description="A package manager written in Python 3.7",
     author="Nguyễn Tuấn Dũng",
     author_email="ntddebugger@gmail.com",
     long_description=long_description,
