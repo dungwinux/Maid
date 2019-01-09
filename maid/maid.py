@@ -2,6 +2,7 @@
 import argparse
 
 # Modules
+from .version import __version__
 from .core import get, rem, query, clear, list_formats
 
 # Argument parsing
@@ -11,13 +12,14 @@ def main():
     # Declare Argument Parser
     parser = argparse.ArgumentParser(
         prog='maid',
-        description='Maid - Package Manager',
-        epilog='Program is still in Pre-Alpha. WIP')
+        description=f'Maid - Package Manager - Alpha {__version__}')
+    # TODO: Add epilog
+
     # --version argument
     parser.add_argument(
         '--version',
         action='version',
-        version='%(prog)s Alpha')
+        version=__version__)
 
     # TODO: --force, --verbose argument
     # parser.add_argument(
