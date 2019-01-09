@@ -50,6 +50,7 @@ def linkBin(path, file):
 def unlinkBin(path, file):
     # This is where file will be unlinked
     link = os.path.join(os.fsdecode(maidBinDir), file)
+    link = str(link) + ".lnk"
     # Check if link is available in bin/ folder
     if os.path.isfile(link):
         # If yes, delete it
