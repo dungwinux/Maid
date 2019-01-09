@@ -10,9 +10,9 @@ from patoolib.util import PatoolError
 from tempfile import mkdtemp
 
 # Modules
-from run import bin_search, link_rem
-from error import MaidError
-from config import maidPackDir, maidTempDir
+from .run import bin_search, link_rem
+from .error import MaidError
+from .config import maidPackDir, maidTempDir
 # import pkgman
 
 
