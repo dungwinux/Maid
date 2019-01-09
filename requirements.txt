@@ -2,3 +2,4 @@ setuptools==39.0.1
 wget==3.2
 pyinstaller==3.4
 patool==1.12
+winshell==0.6
