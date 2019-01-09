@@ -1,4 +1,5 @@
 import os
+from winshell import shortcut
 from config import maidPackDir, maidBinDir
 
 
@@ -39,13 +40,11 @@ def linkBin(path, file):
     binary = os.path.join(path, file)
     # This is where file will be linked to
     link = os.path.join(os.fsdecode(maidBinDir), file)
-    try:
-        # Try to link file in case no link with same name
-        os.link(binary, link)
-        print("\t->", link)
-    except FileExistsError:
-        # If link is available, inform user
-        print("Link is valid, cannot re-link")
+    link = str(link) + ".lnk"
+    # Try to link shortcut
+    scut = shortcut(binary)
+    scut.write(link)
+    print("\t->", link)
 
 
 def unlinkBin(path, file):
