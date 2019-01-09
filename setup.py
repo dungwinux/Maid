@@ -1,11 +1,16 @@
-from setuptools import setup, find_packages
+from setuptools import setup
+
+version = {}
+
+with open("...maid/version.py") as fp:
+    exec(fp.read(), version)
 
 with open("README.md", "r") as readline:
     long_description = readline.read()
 
 setup(
     name="maid",
-    version="0.1.12",
+    version=version['__version__'],
     author="Nguyễn Tuấn Dũng",
     author_email="ntddebugger@gmail.com",
     long_description=long_description,
