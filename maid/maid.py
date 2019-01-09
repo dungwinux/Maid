@@ -2,21 +2,24 @@
 import argparse
 
 # Modules
-import core
+from .version import __version__
+from .core import get, rem, query, clear, list_formats
 
 # Argument parsing
 
-if __name__ == "__main__":
+
+def main():
     # Declare Argument Parser
     parser = argparse.ArgumentParser(
         prog='maid',
-        description='Maid - Package Manager',
-        epilog='Program is still in Pre-Alpha. WIP')
+        description=f'Maid - Package Manager - Alpha {__version__}')
+    # TODO: Add epilog
+
     # --version argument
     parser.add_argument(
         '--version',
         action='version',
-        version='%(prog)s Alpha')
+        version=__version__)
 
     # TODO: --force, --verbose argument
     # parser.add_argument(
@@ -40,7 +43,7 @@ if __name__ == "__main__":
         help=f'Url or path to package',
         metavar='<url/path>')
     # nargs='+'
-    get_parse.set_defaults(func=core.get)
+    get_parse.set_defaults(func=get)
 
     # rem sub-command
     rem_parse = subparsers.add_parser(
@@ -51,7 +54,7 @@ if __name__ == "__main__":
         help='Package name',
         metavar='<pkg_name>')
     # nargs='+'
-    rem_parse.set_defaults(func=core.rem)
+    rem_parse.set_defaults(func=rem)
 
     # query sub-command
     que_parse = subparsers.add_parser(
@@ -62,17 +65,17 @@ if __name__ == "__main__":
         help='Package name',
         metavar='<pkg_name>',
         nargs='?')
-    que_parse.set_defaults(func=core.query, package='.*?')
+    que_parse.set_defaults(func=query, package='.*?')
 
     # clear sub-command
     cle_parse = subparsers.add_parser(
         'cle', help='Clear temporary package downloads')
-    cle_parse.set_defaults(func=core.clear)
+    cle_parse.set_defaults(func=clear)
 
     # arc-support sub-command
     sup_parse = subparsers.add_parser(
         'sup', help='Show supported archive format on this machine')
-    sup_parse.set_defaults(func=core.list_formats)
+    sup_parse.set_defaults(func=list_formats)
 
     # Call argument parser
     args = parser.parse_args()
