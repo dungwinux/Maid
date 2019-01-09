@@ -1,4 +1,4 @@
-from .maid import main
+import maid
 
 if __name__ == "__main__":
-    main()
+    maid.main()
